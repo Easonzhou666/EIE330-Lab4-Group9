@@ -1,23 +1,80 @@
-# 验证记录
+# Verification Record — EIE330 Lab 4
 
-源工程验证记录日期：2026-11-10。此 GitHub 精简版不附带 `build/` 历史结果；运行 `python3 scripts/run.py` 后，工具版本见 `build/*_version.log`，测试结果见 `build/results.json`，每组日志在对应测试目录。为使顶层被 VGA Simulator 识别，合并了两处模块声明修改；本精简版需要在目标 Ubuntu 环境重新运行测试以确认结果。
+**Source-project verification record date:** November 10, 2026.
 
-| 实验要求/设计风险 | 测试台 | 实际检查 |
-|---|---|---|
-| 50 MHz 输入、25 MHz 像素时钟 | tb_clock_reset | 周期 40 ns；异步复位、两级同步释放 |
-| 单次按下只产生一个事件 | tb_key_debounce | 按下抖动、释放抖动、长按、释放后再次按下 |
-| 真实消抖预算 | tb_key_real_time | 500000 周期、19 位计数；8 ms 抖动不触发；第 500000 次稳定采样触发；继续保持 40 ms 不重复 |
-| 三屏循环、状态机 | tb_screen_controller | 0→1→2→0、全部状态复位、同周期点击和帧边界、多个请求累计 |
-| 画面稳定 | tb_screen_controller、tb_lab4_top | 非复位时显示状态只在垂直消隐边界改变；有效区不切换 |
-| VGA 同步和有效窗口 | tb_vga_timing | 连续两帧逐周期检查坐标、HS、VS、有效区和帧边界；每帧 307200 有效点 |
-| 三屏内容 | tb_pixel_generator | 全部 921600 有效像素逐点对比独立坐标/字模参考函数，另外检查消隐和非法状态；导出 PNG |
-| 系统集成 | tb_lab4_top | 完整三次点击循环、抖动、长按、每屏复位、按住时复位、消抖途中复位、重新释放后点击 |
-| 语法、结构与通用综合 | Icarus / Yosys | Icarus `-g2012 -Wall`；Yosys 层次、proc、opt、check -assert、synth -noabc；要求无编译诊断、无 Yosys Warning |
+This cleaned GitHub package does **not** include historical outputs from `build/`. After running `python3 scripts/run.py`, tool versions are recorded in `build/*_version.log`, overall test results in `build/results.json`, and individual test logs in the corresponding test directories.
 
-每组测试均通过 `$fatal` 对错误退出，通过时打印 `PASS`。顶层测试的消抖参数为 8 周期，仅用于缩短按键激励；生产参数的时长由真实参数按键测试独立核验。VGA 时序测试始终使用完整 800×525 参数，没有缩小画面或帧周期。
+Two module-declaration changes were incorporated to help the Simple VGA Simulator discover the top-level module. **The cleaned package must be tested again on the target Ubuntu system; the original verification record is not proof that this repackaged version passes.**
 
-独立像素参考函数验证的是本工程明确选定的图案规范；它不证明曾复用用户的 Lab 3 源码。PNG 来自像素模块仿真导出的帧缓冲，不是开发板截图。
+## 1. Verification Matrix
 
-本次真实消抖测试模拟 128.0016 ms，顶层测试模拟 113.28265 ms，VGA 测试模拟 33.60012 ms。波形文件使用短窗口或选择信号记录，避免保存数百万个无关时钟边沿。
+| Requirement / Design Risk | Testbench or Tool | Checks Performed |
+| --- | --- | --- |
+| 50 MHz input clock and 25 MHz pixel clock | `tb_clock_reset` | 40 ns pixel-clock period; asynchronous reset assertion and two-stage synchronized release |
+| Exactly one event per button press | `tb_key_debounce` | Contact bounce during pressing and releasing; long press; another press after release |
+| Full-duration debounce timing | `tb_key_real_time` | 500,000 clock cycles and a 19-bit counter; 8 ms of bounce must not trigger a click; the 500,000th stable sample triggers an event; holding the button for another 40 ms must not produce a second event |
+| Three-screen cycle and state machine | `tb_screen_controller` | State sequence 0 → 1 → 2 → 0; reset from every state; simultaneous click and frame-boundary events; accumulation of multiple requests |
+| Stable, flicker-free screen selection | `tb_screen_controller`, `tb_lab4_top` | Except during reset, the displayed state changes only at the vertical-blanking boundary, never within the active-video region |
+| VGA synchronization and active-video window | `tb_vga_timing` | Cycle-by-cycle checks of coordinates, HSYNC, VSYNC, active-video enable, and frame boundaries over two complete frames; 307,200 active pixels per frame |
+| All three screen images | `tb_pixel_generator` | All 921,600 active pixels across three screens compared against independent coordinate/font reference functions; blanking regions and invalid states also checked; PNG images exported |
+| Full-system integration | `tb_lab4_top` | Three-click screen cycle; bouncing and long presses; reset from each screen; reset while the button is held or during debouncing; another click after release |
+| Syntax, design structure, and generic synthesis | Icarus Verilog / Yosys | Icarus `-g2012 -Wall`; Yosys `hierarchy`, `proc`, `opt`, `check -assert`, and `synth -noabc`; target is no compile diagnostics or Yosys warnings |
 
-尚未执行：ModelSim/Questa 脚本验证、ABC 技术映射、目标 FPGA 布局布线、静态时序分析、板卡按键和 VGA 实测。SDC 只是时钟约束示例，未验证器件对象路径。本包没有板测视频或报告提交记录。
+## 2. Testbench Method and Scope
+
+Each testbench calls `$fatal` when a check fails and prints `PASS` when its checks complete successfully.
+
+For faster stimulus generation, the top-level integration test uses a shortened debounce setting of **8 clock cycles**. Full-duration behavior with the production debounce parameter is checked separately by `tb_key_real_time`.
+
+The VGA timing test retains the full **800 × 525** scan timing. Neither the screen dimensions nor the frame period were reduced for that test.
+
+The independent pixel-reference functions check the image specification selected for **this project**. They do **not** establish that the user's original Lab 3 source modules were reused. The exported PNG files come from a simulated pixel framebuffer, **not** screenshots of the development-board window.
+
+## 3. Simulation Durations and Waveform Data
+
+The source-project record lists these simulation durations:
+
+| Test | Simulated Time |
+| --- | ---: |
+| `tb_key_real_time` | 128.0016 ms |
+| `tb_lab4_top` | 113.28265 ms |
+| `tb_vga_timing` | 33.60012 ms |
+
+Waveforms were recorded in short time windows or with selected signals, avoiding millions of unrelated clock-edge transitions.
+
+These durations are **reported from the original project record**, not newly measured for the cleaned repository.
+
+## 4. Verification Not Yet Completed
+
+The following items were not completed or have not been verified for this package:
+
+- Validation of the ModelSim/Questa simulation script.
+- ABC technology mapping.
+- Place-and-route for the target FPGA device.
+- Static timing analysis for the target device.
+- Physical-board button operation and VGA measurements.
+- A development-board verification video.
+- Confirmation of report submission.
+
+The included `constraints/lab4.sdc` is an **example clock-constraint file**. Its device-specific object paths have not been verified.
+
+## 5. Reproducing the Checks
+
+Run these commands from the repository root on the Ubuntu virtual machine:
+
+```bash
+python3 scripts/run.py
+python3 scripts/run.py --synth
+```
+
+Review the terminal output, `build/results.json`, and individual test logs. Do not claim that the cleaned repository passes all tests until those commands have actually completed successfully in the target environment.
+
+For the virtual VGA board, select `RTL/`, choose `lab4_top` as the top module, and map `B2` to `key_in`. Verify the expected **color bars → MUST → END → color bars** cycle and reset behavior in the board window. This visual board check is separate from functional simulation and must be documented independently.
+
+## 6. Tool Limitations
+
+- Icarus Verilog functional simulation does not model actual FPGA propagation delay.
+- Yosys generic synthesis is not equivalent to vendor-specific device implementation or timing sign-off.
+- The virtual board is not a physical VGA monitor; its buttons do not reproduce mechanical contact bounce. Debouncing must therefore be verified with the simulated bounce test cases.
+
+The verification record should be updated with fresh tool logs, observed results, and board-video evidence before it is used as a final project submission record.
