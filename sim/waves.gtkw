@@ -1,0 +1,13 @@
+[*] GTKWave: open build/tb_lab4_top/lab4_top.vcd, then load this save file.
+[treeopen] tb_lab4_top.
+[treeopen] tb_lab4_top.dut.
+tb_lab4_top.sys_rst_n
+tb_lab4_top.key_in
+tb_lab4_top.dut.u_key.stable_count
+tb_lab4_top.dut.u_key.armed
+tb_lab4_top.dut.key_level
+tb_lab4_top.dut.click_pulse
+tb_lab4_top.dut.requested_state
+tb_lab4_top.dut.screen_state
+tb_lab4_top.hsync
+tb_lab4_top.vsync
