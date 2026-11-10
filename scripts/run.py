@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Portable Icarus runner. Only Python's standard library is required."""
 import argparse, json, os, shutil, struct, subprocess, sys, zlib
+from check_reuse import check as check_reuse
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TESTS = ['tb_clock_reset','tb_key_debounce','tb_key_real_time',
-         'tb_screen_controller','tb_vga_timing','tb_pixel_generator','tb_lab4_top']
+         'tb_screen_controller','tb_vga_timing','tb_vga_pic','tb_pixel_generator','tb_lab4_top']
 def png_from_ppm(src):
     with src.open('rb') as f:
         if f.readline().strip()!=b'P6': raise ValueError('Expected binary PPM')
@@ -22,6 +23,7 @@ def command(args, log, cwd):
     return p.stdout
 
 def main():
+    check_reuse()
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--test',choices=TESTS)
     ap.add_argument('--synth',action='store_true',help='also run generic Yosys synthesis')
@@ -39,7 +41,7 @@ def main():
     for tb in ([a.test] if a.test else TESTS):
         folder=build/tb; folder.mkdir(exist_ok=True)
         out=folder/(tb+'.vvp')
-        compile_log=command([a.iverilog,'-g2012','-Wall','-s',tb,'-o',str(out),*rtl,str(ROOT/'sim'/(tb+'.v'))],folder/'compile.log',folder)
+        compile_log=command([a.iverilog,'-g2012','-Wall','-I',str(ROOT/'sim'),'-s',tb,'-o',str(out),*rtl,str(ROOT/'sim'/(tb+'.v'))],folder/'compile.log',folder)
         if compile_log.strip(): raise RuntimeError(f'Compiler diagnostics require review: {folder}/compile.log\n{compile_log}')
         output=command([a.vvp,str(out)],folder/'simulation.log',folder)
         if f'PASS {tb}:' not in output: raise RuntimeError(f'No PASS marker: {tb}')

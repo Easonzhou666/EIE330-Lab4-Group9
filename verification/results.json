@@ -1,0 +1,47 @@
+[
+  {
+    "test": "tb_clock_reset",
+    "status": "PASS",
+    "compiler_diagnostics": 0
+  },
+  {
+    "test": "tb_key_debounce",
+    "status": "PASS",
+    "compiler_diagnostics": 0
+  },
+  {
+    "test": "tb_key_real_time",
+    "status": "PASS",
+    "compiler_diagnostics": 0
+  },
+  {
+    "test": "tb_screen_controller",
+    "status": "PASS",
+    "compiler_diagnostics": 0
+  },
+  {
+    "test": "tb_vga_timing",
+    "status": "PASS",
+    "compiler_diagnostics": 0
+  },
+  {
+    "test": "tb_vga_pic",
+    "status": "PASS",
+    "compiler_diagnostics": 0
+  },
+  {
+    "test": "tb_pixel_generator",
+    "status": "PASS",
+    "compiler_diagnostics": 0
+  },
+  {
+    "test": "tb_lab4_top",
+    "status": "PASS",
+    "compiler_diagnostics": 0
+  },
+  {
+    "test": "yosys_generic_synthesis",
+    "status": "PASS",
+    "warnings": 0
+  }
+]

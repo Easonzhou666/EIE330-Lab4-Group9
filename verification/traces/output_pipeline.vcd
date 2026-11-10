@@ -1,0 +1,286 @@
+$date
+	Tue Nov 10 16:03:46 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module trace_output $end
+$scope module dut $end
+$var wire 1 ! pixel_clk $end
+$upscope $end
+$upscope $end
+$scope module trace_output $end
+$scope module dut $end
+$var wire 10 " pixel_x [9:0] $end
+$upscope $end
+$upscope $end
+$scope module trace_output $end
+$scope module dut $end
+$var wire 10 # pixel_y [9:0] $end
+$upscope $end
+$upscope $end
+$scope module trace_output $end
+$scope module dut $end
+$var wire 1 $ video_active $end
+$upscope $end
+$upscope $end
+$scope module trace_output $end
+$scope module dut $end
+$var wire 1 % hsync_raw $end
+$upscope $end
+$upscope $end
+$scope module trace_output $end
+$var wire 1 & hsync $end
+$upscope $end
+$scope module trace_output $end
+$var wire 16 ' rgb [15:0] $end
+$upscope $end
+$scope module trace_output $end
+$scope module dut $end
+$var wire 2 ( screen_state [1:0] $end
+$upscope $end
+$upscope $end
+$scope module trace_output $end
+$scope module dut $end
+$scope module u_pixels $end
+$var reg 2 ) state_q [1:0] $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#3190000
+$dumpon
+b0 )
+b0 (
+b1111100000000000 '
+1&
+1%
+1$
+b0 #
+b1001100 "
+1!
+$end
+#3210000
+0!
+#3230000
+b1001101 "
+1!
+#3250000
+0!
+#3270000
+b1001110 "
+1!
+#3290000
+0!
+#3310000
+b1001111 "
+1!
+#3330000
+0!
+#3350000
+b1010000 "
+1!
+#3370000
+0!
+#3390000
+b1111111111100000 '
+b1010001 "
+1!
+#3410000
+0!
+#3430000
+b1010010 "
+1!
+#3450000
+0!
+#3470000
+b1010011 "
+1!
+#3490000
+0!
+#3510000
+b1010100 "
+1!
+#3530000
+0!
+#3550000
+b1010101 "
+1!
+#3570000
+0!
+#3590000
+b1010110 "
+1!
+#3610000
+0!
+#3630000
+b1010111 "
+1!
+#3650000
+$dumpoff
+bx )
+bx (
+bx '
+x&
+x%
+x$
+bx #
+bx "
+x!
+$end
+0!
+#26230000
+$dumpon
+b0 )
+b0 (
+b0 '
+1&
+1%
+0$
+b0 #
+b1010001100 "
+1!
+$end
+#26250000
+0!
+#26270000
+b1010001101 "
+1!
+#26290000
+0!
+#26310000
+b1010001110 "
+1!
+#26330000
+0!
+#26350000
+b1010001111 "
+1!
+#26370000
+0!
+#26390000
+0%
+b1010010000 "
+1!
+#26410000
+0!
+#26430000
+0&
+b1010010001 "
+1!
+#26450000
+0!
+#26470000
+b1010010010 "
+1!
+#26490000
+0!
+#26510000
+b1010010011 "
+1!
+#26530000
+0!
+#26550000
+b1010010100 "
+1!
+#26570000
+0!
+#26590000
+b1010010101 "
+1!
+#26610000
+0!
+#26630000
+b1010010110 "
+1!
+#26650000
+0!
+#26670000
+b1010010111 "
+1!
+#26690000
+$dumpoff
+bx )
+bx (
+bx '
+x&
+x%
+x$
+bx #
+bx "
+x!
+$end
+0!
+#23461750000
+$dumpon
+b1 )
+b1 (
+b0 '
+1&
+1%
+1$
+b11010000 #
+b10001100 "
+1!
+$end
+#23461770000
+0!
+#23461790000
+b10001101 "
+1!
+#23461810000
+0!
+#23461830000
+b10001110 "
+1!
+#23461850000
+0!
+#23461870000
+b10001111 "
+1!
+#23461890000
+0!
+#23461910000
+b10010000 "
+1!
+#23461930000
+0!
+#23461950000
+b1111111111111111 '
+b10010001 "
+1!
+#23461970000
+0!
+#23461990000
+b10010010 "
+1!
+#23462010000
+0!
+#23462030000
+b10010011 "
+1!
+#23462050000
+0!
+#23462070000
+b10010100 "
+1!
+#23462090000
+0!
+#23462110000
+b10010101 "
+1!
+#23462130000
+0!
+#23462150000
+b10010110 "
+1!
+#23462170000
+0!
+#23462190000
+b10010111 "
+1!
+#23462210000
+0!

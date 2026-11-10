@@ -1,0 +1,1 @@
+read_verilog -sv RTL/clock_reset.v RTL/color_bars.v RTL/key_debounce.v RTL/lab4_top.v RTL/pixel_generator.v RTL/screen_controller.v RTL/vga_pic.v RTL/vga_timing.v; hierarchy -check -top lab4_top; proc; opt; check -assert; write_json build/rtl.json; write_rtlil build/rtl.il; stat; synth -noabc -top lab4_top; check -assert; stat; write_json build/synth.json

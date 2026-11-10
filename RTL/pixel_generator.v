@@ -1,55 +1,51 @@
 `timescale 1ns/1ps
 `default_nettype none
-module pixel_generator(input wire [9:0] pixel_x, input wire [9:0] pixel_y,
+module pixel_generator(input wire clk, input wire rst_n,
+    input wire [9:0] pixel_x, input wire [9:0] pixel_y,
     input wire video_active, input wire [1:0] screen_state,
     output reg [15:0] rgb);
-    // 5x7 font, 8x scale: glyph 40x56; gap 8; group vertically centered.
-    // MUST: x=228,276,324,372; END: x=252,300,348; y=212..267.
-    reg [7:0] character;
-    reg [9:0] local_x, local_y;
-    reg [2:0] font_row, font_col;
-    reg in_glyph;
-    wire [4:0] row_bits;
-    font_rom u_font(.character(character), .row(font_row), .row_bits(row_bits));
-    always @* begin
-        character = 8'd0;
-        local_x = 10'd0;
-        local_y = 10'd0;
-        font_row = 3'd0;
-        font_col = 3'd0;
-        in_glyph = 1'b0;
-        if (pixel_y >= 10'd212 && pixel_y < 10'd268) begin
-            local_y = pixel_y - 10'd212;
-            if (screen_state == 2'd1) begin
-                if (pixel_x >= 228 && pixel_x < 268) begin character=8'd77; local_x=pixel_x-10'd228; in_glyph=1'b1; end
-                else if (pixel_x >= 276 && pixel_x < 316) begin character=8'd85; local_x=pixel_x-10'd276; in_glyph=1'b1; end
-                else if (pixel_x >= 324 && pixel_x < 364) begin character=8'd83; local_x=pixel_x-10'd324; in_glyph=1'b1; end
-                else if (pixel_x >= 372 && pixel_x < 412) begin character=8'd84; local_x=pixel_x-10'd372; in_glyph=1'b1; end
-            end else if (screen_state == 2'd2) begin
-                if (pixel_x >= 252 && pixel_x < 292) begin character=8'd69; local_x=pixel_x-10'd252; in_glyph=1'b1; end
-                else if (pixel_x >= 300 && pixel_x < 340) begin character=8'd78; local_x=pixel_x-10'd300; in_glyph=1'b1; end
-                else if (pixel_x >= 348 && pixel_x < 388) begin character=8'd68; local_x=pixel_x-10'd348; in_glyph=1'b1; end
-            end
-            font_row = local_y[5:3];
-            font_col = local_x[5:3];
-        end
+    // The archived vga_pic uses origins 48,144,240,336 and registered RGB.
+    // Translate its input, preserving the original module and all MUST masks.
+    // MUST: origins 144,240,336,432; END: 192,288,384; y=208..271.
+    // All glyph boxes are 64x64 with 32-pixel gaps; MSB is the left column.
+    wire must_active = video_active && pixel_x >= 10'd96;
+    wire end_active = video_active && pixel_x >= 10'd144;
+    wire [9:0] must_x = must_active ? pixel_x - 10'd96 : 10'd0;
+    wire [9:0] end_x = end_active ? pixel_x - 10'd144 : 10'd0;
+    wire [15:0] must_rgb, end_rgb, bars_rgb;
+    reg [15:0] bars_q;
+    reg [1:0] state_q;
+    // Literal source reuse: this instance uses every original parameter default.
+    vga_pic u_must(.vga_clk(clk), .sys_rst_n(rst_n), .active(must_active),
+        .pix_x(must_x), .pix_y(pixel_y), .pix_data(must_rgb));
+    // Same Lab 3 renderer, new row constants: slots M/U/S become E/N/D.
+    // The fourth slot is blank. No new font address convention is introduced.
+    vga_pic #(
+        .M0(8'hFF), .M1(8'hC0), .M2(8'hC0), .M3(8'hFC),
+        .M4(8'hC0), .M5(8'hC0), .M6(8'hC0), .M7(8'hFF),
+        .U0(8'hC3), .U1(8'hE3), .U2(8'hF3), .U3(8'hDB),
+        .U4(8'hCF), .U5(8'hC7), .U6(8'hC3), .U7(8'hC3),
+        .S0(8'hFC), .S1(8'hC6), .S2(8'hC3), .S3(8'hC3),
+        .S4(8'hC3), .S5(8'hC3), .S6(8'hC6), .S7(8'hFC),
+        .T0(8'h00), .T1(8'h00), .T2(8'h00), .T3(8'h00),
+        .T4(8'h00), .T5(8'h00), .T6(8'h00), .T7(8'h00)
+    ) u_end(.vga_clk(clk), .sys_rst_n(rst_n), .active(end_active),
+        .pix_x(end_x), .pix_y(pixel_y), .pix_data(end_rgb));
+    color_bars u_bars(.pixel_x(pixel_x), .video_active(video_active),
+        .rgb(bars_rgb));
+    // Match the one-edge latency of both vga_pic instances.
+    // Register the selector too: every mux input describes the same sample.
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin bars_q <= 16'h0000; state_q <= 2'd0; end
+        else begin bars_q <= bars_rgb; state_q <= screen_state; end
     end
     always @* begin
-        rgb = 16'h0000;
-        if (video_active) begin
-            if (screen_state == 2'd0) begin
-                if (pixel_x < 80) rgb=16'hF800;       // red
-                else if (pixel_x < 160) rgb=16'hFFE0; // yellow
-                else if (pixel_x < 240) rgb=16'h07E0; // green
-                else if (pixel_x < 320) rgb=16'h07FF; // cyan
-                else if (pixel_x < 400) rgb=16'h001F; // blue
-                else if (pixel_x < 480) rgb=16'hF81F; // magenta
-                else if (pixel_x < 560) rgb=16'hFFFF; // white
-                else rgb=16'h0000;                  // black
-            end else if (in_glyph && font_col < 3'd5) begin
-                if (row_bits[4-font_col]) rgb=16'hFFFF;
-            end
-        end
+        case (state_q)
+            2'd0: rgb = bars_q;
+            2'd1: rgb = must_rgb;
+            2'd2: rgb = end_rgb;
+            default: rgb = 16'h0000;
+        endcase
     end
 endmodule
 `default_nettype wire

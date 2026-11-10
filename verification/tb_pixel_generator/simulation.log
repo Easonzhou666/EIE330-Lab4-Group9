@@ -1,0 +1,6 @@
+VCD info: dumpfile pixel_generator.vcd opened for output.
+Screen 0: 307200 pixels matched; white pixels=38400
+Screen 1: 307200 pixels matched; white pixels=8448
+Screen 2: 307200 pixels matched; white pixels=6912
+PASS tb_pixel_generator: all 921600 active pixels, 3 screens, blanking, illegal state
+C:\Users\zhoux\Documents\Codex\2026-11-10\files-mentioned-by-the-user-lab\work\revised-code-clean-check\sim\tb_pixel_generator.v:48: $finish called at 9216858000 (1ps)

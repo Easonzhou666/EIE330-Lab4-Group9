@@ -1,0 +1,3 @@
+VCD info: dumpfile vga_pic.vcd opened for output.
+PASS tb_vga_pic: original module, 307200 coordinates, 8448 white, registered output, blanking, async reset
+C:\Users\zhoux\Documents\Codex\2026-11-10\files-mentioned-by-the-user-lab\work\revised-code-clean-check\sim\tb_vga_pic.v:30: $finish called at 3072037000 (1ps)

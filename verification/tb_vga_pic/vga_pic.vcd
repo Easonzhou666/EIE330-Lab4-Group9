@@ -1,0 +1,154 @@
+$date
+	Tue Nov 10 22:30:42 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module tb_vga_pic $end
+$var wire 16 ! pix_data [15:0] $end
+$var reg 1 " active $end
+$var reg 16 # old_value [15:0] $end
+$var reg 10 $ pix_x [9:0] $end
+$var reg 10 % pix_y [9:0] $end
+$var reg 1 & sys_rst_n $end
+$var reg 1 ' vga_clk $end
+$var integer 32 ( count [31:0] $end
+$var integer 32 ) x [31:0] $end
+$var integer 32 * y [31:0] $end
+$scope function golden_pixel $end
+$var reg 8 + bits [7:0] $end
+$var reg 16 , golden_pixel [15:0] $end
+$var integer 32 - ch [31:0] $end
+$var integer 32 . cx [31:0] $end
+$var integer 32 / idx [31:0] $end
+$var integer 32 0 start [31:0] $end
+$var integer 32 1 state [31:0] $end
+$var integer 32 2 xx [31:0] $end
+$var integer 32 3 yy [31:0] $end
+$upscope $end
+$scope function golden_row $end
+$var reg 8 4 golden_row [7:0] $end
+$var reg 64 5 rows [63:0] $end
+$var integer 32 6 ch [31:0] $end
+$var integer 32 7 row [31:0] $end
+$upscope $end
+$scope module dut $end
+$var wire 1 " active $end
+$var wire 10 8 pix_x [9:0] $end
+$var wire 10 9 pix_y [9:0] $end
+$var wire 1 & sys_rst_n $end
+$var wire 1 ' vga_clk $end
+$var wire 3 : char_y [2:0] $end
+$var wire 3 ; char_x [2:0] $end
+$var parameter 8 < M0 $end
+$var parameter 8 = M1 $end
+$var parameter 8 > M2 $end
+$var parameter 8 ? M3 $end
+$var parameter 8 @ M4 $end
+$var parameter 8 A M5 $end
+$var parameter 8 B M6 $end
+$var parameter 8 C M7 $end
+$var parameter 8 D S0 $end
+$var parameter 8 E S1 $end
+$var parameter 8 F S2 $end
+$var parameter 8 G S3 $end
+$var parameter 8 H S4 $end
+$var parameter 8 I S5 $end
+$var parameter 8 J S6 $end
+$var parameter 8 K S7 $end
+$var parameter 8 L T0 $end
+$var parameter 8 M T1 $end
+$var parameter 8 N T2 $end
+$var parameter 8 O T3 $end
+$var parameter 8 P T4 $end
+$var parameter 8 Q T5 $end
+$var parameter 8 R T6 $end
+$var parameter 8 S T7 $end
+$var parameter 8 T U0 $end
+$var parameter 8 U U1 $end
+$var parameter 8 V U2 $end
+$var parameter 8 W U3 $end
+$var parameter 8 X U4 $end
+$var parameter 8 Y U5 $end
+$var parameter 8 Z U6 $end
+$var parameter 8 [ U7 $end
+$var reg 8 \ bitmap_row [7:0] $end
+$var reg 2 ] char_id [1:0] $end
+$var reg 1 ^ inside_box $end
+$var reg 10 _ local_x [9:0] $end
+$var reg 16 ` pix_data [15:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#3072010000
+$dumpon
+b0 `
+b0 _
+0^
+b0 ]
+b11100111 \
+b0 ;
+b1 :
+b111011111 9
+b1001111111 8
+b111 7
+b1010100 6
+b1111111111111111000110000001100000011000000110000001100000011000 5
+b11000 4
+b111011111 3
+b1011011111 2
+b1 1
+b10010000 0
+b11 /
+b111111 .
+b1010100 -
+b0 ,
+b11000 +
+b111100000 *
+b1010000000 )
+b10000100000000 (
+0'
+1&
+b111011111 %
+b1001111111 $
+b0 #
+1"
+b0 !
+$end
+b0 :
+b11000011 \
+1^
+b11010000 %
+b11010000 9
+b110000 $
+b110000 8
+#3072015000
+b1111111111111111 !
+b1111111111111111 `
+1'
+#3072020000
+b11000011 \
+0^
+0"
+0'
+#3072025000
+b0 !
+b0 `
+1'
+#3072030000
+b11000011 \
+1^
+1"
+0'
+#3072035000
+b1111111111111111 !
+b1111111111111111 `
+1'
+#3072036000
+b0 !
+b0 `
+0&
+#3072037000

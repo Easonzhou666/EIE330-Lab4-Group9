@@ -1,0 +1,33 @@
+{
+  "revision": "lab3-reuse-r1",
+  "sha256": {
+    "RTL/clock_reset.v": "e9aa050de3d17bb6e5e49a87161a335802ab2a90af928ddaeb2d24289e6284bc",
+    "RTL/color_bars.v": "73cc241c3d4ebabb458c4fa78c555928df8b80a95b17246dba4fe2f57acf0db3",
+    "RTL/key_debounce.v": "dd6f1be04dcc4858442874339d2f2663fa22072adf27cedd60cfc5592b5e066e",
+    "RTL/lab4_top.v": "f0aa7476cba686951e4d2ed0fac00e62e404bdc0f5c76d82b562de4e2a3d2e36",
+    "RTL/pixel_generator.v": "191ab5af7109d26f874769f588da664285558265da554a3406bb369564c02a0e",
+    "RTL/screen_controller.v": "49a45eafd5aa6f43de633a20104b81aba28dd0f7f426a4e6426252be2dab3e06",
+    "RTL/vga_pic.v": "56df58d565fa214e3fa5cb9fa65091a74c128fd7806bd121a216d01799f27f08",
+    "RTL/vga_timing.v": "f21dbb67a7ed55a60bdf8a527898fbbb8b38b4a6e5c22f836f1dd76865a2a995",
+    "sim/golden_pixels.vh": "7f40856176c73e5a5742513cdcbbea3461929d47358858254c823b17510b823b",
+    "sim/run_modelsim.do": "058a8c993d764dbdce5b06f765d5d992817d40bdf42e7abe23046721f98d11f8",
+    "sim/tb_clock_reset.v": "289acd6e1cddcd672cd4d5ec3f12f12fd40ffb362e051e7cfeadc662eb649629",
+    "sim/tb_key_debounce.v": "63afeded5e5870992af915a2afc09fda0c2e9002fe08f2c66cda9a890aee7caf",
+    "sim/tb_key_real_time.v": "0425d6e5eab22950691048e0268621c0e92944072e847e9279d1f63e3ca52b58",
+    "sim/tb_lab4_top.v": "970f35a09e8ca6118f09f3c7fff61950725938da7fe738738e8e304b17a3ef37",
+    "sim/tb_pixel_generator.v": "5a912540b534de96da7307091adf1475381ec660d2b83b1cba23d2e0c5b2fc02",
+    "sim/tb_screen_controller.v": "86bf118a8194f46a429bc499204b2c27394bdd66e35f47ac15cd41aadb03dca8",
+    "sim/tb_vga_pic.v": "9b10fd8c749dff7bdbe4a45f726f9a946772359640db12c4bc5107c8989ae356",
+    "sim/tb_vga_timing.v": "7dc71dbed5b0334a0e0901826d2f37dab5a4895fa2da69cdcfa6859d524c6f81",
+    "sim/trace_lab4.v": "3e48f031a4016ca8679654367a44b16b43b01fd57efff85d60ce134d618c7dff",
+    "sim/trace_output.v": "54506219b6bd7df185cfb68d97b5422060c4ba8e15d82e55d0d5fbe4f2b58d0a",
+    "sim/waves.gtkw": "b2abc0dbd7a232e685d1f8d7bea618910e883b0b7205665162ce5898e591c194",
+    "scripts/capture_traces.py": "893f3d2a387cdcdf3bab7cd26fd14702b16f0b8b25f7b317283115d4aae251c9",
+    "scripts/check_reuse.py": "d10a3793ffa9e298daaca75b8ef3fdbe91320ca6c65238a85785b1c661d2545f",
+    "scripts/run.py": "8ed14ac51d4c38bdb00b04608c55bb7816570fec3dac0e02e80f91f96030757b",
+    "scripts/vcd2csv.py": "0656e7cf3da763f71ef1b1dfe4c6d6140db55dc2b1b71cd745d03b943a263a4d",
+    "constraints/lab4.sdc": "7e9490479f2a7ea7a783bd168dba6d75b1097a043f0d4035f8594c1da8d88587",
+    "provenance/LAB3_REUSE.md": "72ab599dbe970bd0f1f5681fc71a4d507a238b643932d5b74b9af1a7ca36882b",
+    "provenance/lab3_top.v.txt": "a7046e24f8b75d9a95c83c45bde36b6399c21c943ac62ddea46c1c72541343bd"
+  }
+}

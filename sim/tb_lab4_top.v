@@ -3,7 +3,10 @@ module tb_lab4_top;
     reg sys_clk=0,sys_rst_n=1,key_in=1;
     wire hsync,vsync;
     wire [15:0] rgb;
-    integer clicks=0,changes=0;
+    integer clicks=0,changes=0, checked_pixels=0;
+    reg sampled_active, sampled_hsync, sampled_vsync, sampled_rst_n;
+    reg [15:0] sampled_rgb;
+    `include "golden_pixels.vh"
     reg [1:0] old_screen=0;
     reg boundary_previous=0;
     lab4_top #(.DEBOUNCE_CYCLES(8)) dut(.*);
@@ -11,13 +14,20 @@ module tb_lab4_top;
     always @(posedge dut.pixel_clk) begin
         if(dut.pixel_rst_n && dut.click_pulse) clicks=clicks+1;
         boundary_previous=dut.frame_blank_start;
+        sampled_active=dut.video_active; sampled_rst_n=dut.pixel_rst_n;
+        sampled_hsync=dut.hsync_raw; sampled_vsync=dut.vsync_raw;
+        sampled_rgb=sampled_active ? golden_pixel(dut.screen_state,dut.pixel_x,dut.pixel_y) : 16'h0000;
         #1;
         if(!dut.pixel_rst_n) old_screen=0;
         else if(dut.screen_state!=old_screen) begin
             if(!boundary_previous || dut.video_active) $fatal(1,"screen changed outside vblank");
             changes=changes+1; old_screen=dut.screen_state;
         end
-        if(dut.pixel_rst_n && !dut.video_active && rgb!==0) $fatal(1,"RGB not black during blanking");
+        if(sampled_rst_n) begin
+            if(rgb!==sampled_rgb) $fatal(1,"output pipeline RGB misalignment");
+            if(hsync!==sampled_hsync || vsync!==sampled_vsync) $fatal(1,"output sync misalignment");
+            checked_pixels=checked_pixels+1;
+        end
     end
     task cycles(input integer n); begin repeat(n) @(negedge dut.pixel_clk); end endtask
     task clean_click; begin key_in=0; cycles(18); key_in=1; cycles(18); end endtask
@@ -59,6 +69,7 @@ module tb_lab4_top;
         cycles(40); if(clicks!=6) $fatal(1,"mid-click reset created event");
         key_in=1; cycles(20); clean_click; wait_screen(1);
         if(clicks!=7 || changes!=7) $fatal(1,"integration totals clicks=%0d commits=%0d",clicks,changes);
+        $display("Integrated pixel/sync samples checked: %0d",checked_pixels);
         $display("PASS tb_lab4_top: complete cycle, bounce, long press, reset every screen/held/mid-click, vblank switching");
         $finish;
     end

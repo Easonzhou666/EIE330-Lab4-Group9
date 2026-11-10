@@ -1,0 +1,3 @@
+VCD info: dumpfile key_debounce.vcd opened for output.
+PASS tb_key_debounce: bounce, long hold, reset-held, mid-debounce reset
+C:\Users\zhoux\Documents\Codex\2026-11-10\files-mentioned-by-the-user-lab\work\revised-code-clean-check\sim\tb_key_debounce.v:31: $finish called at 12640000 (1ps)

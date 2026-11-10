@@ -1,0 +1,3 @@
+VCD info: dumpfile output_pipeline.vcd opened for output.
+PASS trace_output: three short matched-pipeline capture windows
+C:\Users\zhoux\Documents\Codex\2026-11-10\files-mentioned-by-the-user-lab\work\revised-lab4\sim\trace_output.v:22: $finish called at 23462210000 (1ps)

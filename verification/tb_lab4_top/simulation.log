@@ -1,0 +1,4 @@
+VCD info: dumpfile lab4_top.vcd opened for output.
+Integrated pixel/sync samples checked: 2832046
+PASS tb_lab4_top: complete cycle, bounce, long press, reset every screen/held/mid-click, vblank switching
+C:\Users\zhoux\Documents\Codex\2026-11-10\files-mentioned-by-the-user-lab\work\revised-code-clean-check\sim\tb_lab4_top.v:74: $finish called at 113282650000 (1ps)
